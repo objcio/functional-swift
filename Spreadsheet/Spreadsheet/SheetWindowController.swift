@@ -1,53 +1,38 @@
-//
-//  SheetWindowController.swift
-//  Spreadsheet
-//
-//  Created by Chris Eidhof on 01.07.14.
-//  Copyright (c) 2014 Unsigned Integer. All rights reserved.
-//
-
 import Cocoa
 
 class SheetWindowController: NSWindowController {
-
     @IBOutlet var tableView: NSTableView! = nil
     @IBOutlet var dataSource: SpreadsheetDatasource?
     @IBOutlet var delegate: SpreadsheetDelegate?
 
     override func windowDidLoad()  {
         delegate?.editedRowDelegate = dataSource
-
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: NSSelectorFromString("endEditing:"), name: NSControlTextDidEndEditingNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: NSSelectorFromString("endEditing:"), name: NSNotification.Name.NSControlTextDidEndEditing, object: nil)
     }
 
-    func endEditing(note: NSNotification) {
-        if note.object as! NSObject === tableView {
-            dataSource?.editedRow = nil
-        }
+    func endEditing(_ note: Notification) {
+        guard note.object as? NSObject === tableView else { return }
+        dataSource?.editedRow = nil
     }
-
 }
 
 
-protocol EditedRow {
+protocol EditedRow: class {
     var editedRow: Int? { get set }
 }
 
 
 class SpreadsheetDelegate: NSObject, NSTableViewDelegate {
+    weak var editedRowDelegate: EditedRow?
 
-    var editedRowDelegate: EditedRow?
-
-    func tableView(aTableView: NSTableView, shouldEditTableColumn aTableColumn: NSTableColumn?, row rowIndex: Int) -> Bool {
+    func tableView(_ aTableView: NSTableView, shouldEdit aTableColumn: NSTableColumn?, row rowIndex: Int) -> Bool {
         editedRowDelegate?.editedRow = rowIndex
         return true
     }
-
 }
 
 
 class SpreadsheetDatasource: NSObject, NSTableViewDataSource, EditedRow {
-
     var formulas: [String]
     var results: [Result]
     var editedRow: Int? = nil
@@ -55,41 +40,39 @@ class SpreadsheetDatasource: NSObject, NSTableViewDataSource, EditedRow {
     override init() {
         let initialValues = Array(1..<10)
         formulas = initialValues.map { "\($0)" }
-        results = initialValues.map { Result.IntResult($0) }
+        results = initialValues.map { .int($0) }
     }
 
-    func calculateExpressions() {
-        results = evaluateExpressions(formulas.map(parseExpression))
+    func parseAndEvaluate() {
+        let expressions = formulas.map { Expression.parser.parse($0.characters)?.0 }
+        results = evaluate(expressions: expressions)
     }
 
-    func numberOfRowsInTableView(tableView: NSTableView) -> Int {
+    func numberOfRows(in tableView: NSTableView) -> Int {
         return formulas.count
     }
 
-    func tableView(aTableView: NSTableView, objectValueForTableColumn: NSTableColumn?, row: Int) -> AnyObject? {
+    func tableView(_ aTableView: NSTableView, objectValueFor objectValueForTableColumn: NSTableColumn?, row: Int) -> Any? {
         return editedRow == row ? formulas[row] : results[row].description
     }
 
-    func tableView(aTableView: NSTableView, setObjectValue: AnyObject?, forTableColumn: NSTableColumn?, row: Int) {
-        let string = setObjectValue as! String
+    func tableView(_ tableView: NSTableView, setObjectValue: Any?, for forTableColumn: NSTableColumn?, row: Int) {
+        guard let string = setObjectValue as? String else { fatalError() }
         formulas[row] = string
-        calculateExpressions()
-        aTableView.reloadData()
+        parseAndEvaluate()
+        tableView.reloadData()
     }
-
 }
 
 
 extension Result: CustomStringConvertible {
     var description: String {
         switch (self) {
-        case .IntResult(let x):
+        case .int(let x):
             return "\(x)"
-        case .StringResult(let s):
-            return "\(s)"
-        case .ListResult(let s):
-            return s.description
-        case .EvaluationError(let e):
+        case .list(let x):
+            return String(describing: x)
+        case .error(let e):
             return "Error: \(e)"
         }
     }

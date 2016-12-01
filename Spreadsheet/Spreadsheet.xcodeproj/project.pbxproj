@@ -7,7 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		17D8E1AE1BB58C7C00150E0F /* parsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D8E1AD1BB58C7C00150E0F /* parsing.swift */; };
+		17CB5FA71DBE7D5A00690E70 /* Expression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CB5FA61DBE7D5A00690E70 /* Expression.swift */; };
+		17CB5FA91DBE7D7300690E70 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CB5FA81DBE7D7300690E70 /* Helpers.swift */; };
+		17D8E1AE1BB58C7C00150E0F /* Parsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D8E1AD1BB58C7C00150E0F /* Parsing.swift */; };
 		83E6F37B1962FCDD0030D82A /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E6F37A1962FCDD0030D82A /* main.swift */; };
 		83E6F37D1962FCDD0030D82A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E6F37C1962FCDD0030D82A /* AppDelegate.swift */; };
 		83E6F37F1962FCDD0030D82A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 83E6F37E1962FCDD0030D82A /* Images.xcassets */; };
@@ -17,7 +19,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		17D8E1AD1BB58C7C00150E0F /* parsing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = parsing.swift; sourceTree = "<group>"; };
+		17CB5FA61DBE7D5A00690E70 /* Expression.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Expression.swift; sourceTree = "<group>"; };
+		17CB5FA81DBE7D7300690E70 /* Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
+		17D8E1AD1BB58C7C00150E0F /* Parsing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Parsing.swift; sourceTree = "<group>"; };
 		83E6F3751962FCDD0030D82A /* Spreadsheet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Spreadsheet.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		83E6F3791962FCDD0030D82A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		83E6F37A1962FCDD0030D82A /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
@@ -42,7 +46,9 @@
 		837899101964052600AAC58E /* Library Code */ = {
 			isa = PBXGroup;
 			children = (
-				17D8E1AD1BB58C7C00150E0F /* parsing.swift */,
+				17D8E1AD1BB58C7C00150E0F /* Parsing.swift */,
+				17CB5FA81DBE7D7300690E70 /* Helpers.swift */,
+				17CB5FA61DBE7D5A00690E70 /* Expression.swift */,
 			);
 			name = "Library Code";
 			sourceTree = "<group>";
@@ -114,11 +120,12 @@
 			attributes = {
 				LastSwiftMigration = 0700;
 				LastSwiftUpdateCheck = 0700;
-				LastUpgradeCheck = 0700;
+				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = "Unsigned Integer";
 				TargetAttributes = {
 					83E6F3741962FCDD0030D82A = {
 						CreatedOnToolsVersion = 6.0;
+						LastSwiftMigration = 0800;
 					};
 				};
 			};
@@ -159,9 +166,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				83E6F37D1962FCDD0030D82A /* AppDelegate.swift in Sources */,
+				17CB5FA91DBE7D7300690E70 /* Helpers.swift in Sources */,
 				83E6F39A1962FD270030D82A /* SheetWindowController.swift in Sources */,
-				17D8E1AE1BB58C7C00150E0F /* parsing.swift in Sources */,
+				17D8E1AE1BB58C7C00150E0F /* Parsing.swift in Sources */,
 				83E6F37B1962FCDD0030D82A /* main.swift in Sources */,
+				17CB5FA71DBE7D5A00690E70 /* Expression.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -192,8 +201,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "-";
@@ -202,6 +213,7 @@
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -235,8 +247,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "-";
@@ -245,6 +259,7 @@
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -272,6 +287,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.unsignedinteger.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_INCLUDE_PATHS = "/Users/chris/Desktop/fpinswift/test-projects/Parsing/Parsing";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -290,6 +306,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.unsignedinteger.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_INCLUDE_PATHS = "/Users/chris/Desktop/fpinswift/test-projects/Parsing/Parsing";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
